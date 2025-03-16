@@ -1,0 +1,71 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-sm: 375px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1200px;
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 20px;
+  @media (width >= theme(--breakpoint-lg)) {
+    padding-inline: 80px;
+  }
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@utility btn {
+  @apply px-4 py-2 rounded-lg font-medium inline-flex items-center justify-center tracking-tight;
+}
+
+@utility btn-primary {
+  @apply bg-black text-white;
+}
+
+@utility btn-text {
+  @apply text-black bg-transparent;
+}
+
+@utility logo-ticker-image {
+  @apply h-8 w-auto;
+}
+
+@utility tag {
+  @apply text-sm inline-flex border border-[#222]/10 px-3 py-1 rounded-lg tracking-tight;
+}
+
+@utility section-title {
+  @apply text-center text-3xl md:text-[54px] md:leading-[60px] font-bold tracking-tighter bg-linear-to-b from-black to-[#001E80] text-transparent bg-clip-text;
+}
+
+@utility section-description {
+  @apply text-center text-[22px] leading-[30px] tracking-tight text-[#010D3E];
+}
+
+@utility section-heading {
+  @apply max-w-[540px] mx-auto;
+}
+
+@utility card {
+  @apply p-10 border border-[#222222]/10 rounded-3xl shadow-[0_7px_14px_#EAEAEA] max-w-xs w-full;
+}
