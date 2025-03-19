@@ -2,7 +2,8 @@ import axios from 'axios'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Lenis from 'lenis'
 import HomePage from './sections/HomePage'
-import { useEffect } from 'react'
+import LoginPage from './sections/LoginPage'
+import SignUpPage from './sections/SignupPage'
 //setting up cors 
 axios.defaults.baseURL="http://localhost:3000"
 axios.defaults.withCredentials = true 
@@ -17,23 +18,14 @@ lenis.on('scroll', (e) => {
 });
 
 function App() {
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/users"); // ✅ Replace with your API URL
-        const data=response.data[0];
-        console.log(data); // ✅ Handle the response
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData(); // ✅ Call the async function
-  }, []); 
+ 
   return (
      <BrowserRouter>
      <Routes>
-       <Route path='/' element={<HomePage />} />
+       <Route path='/' element={<HomePage/>} />
+       <Route path='/login' element={<LoginPage/>} />
+       <Route path='/signup' element={<SignUpPage/>} />
+       <Route path='/user' element={<HomePage/>} />
      </Routes>
    </BrowserRouter>
   )

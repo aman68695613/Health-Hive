@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 
 import { Header } from './Header'
 import { Hero } from './Hero'
@@ -8,19 +9,20 @@ import { Testimonials } from './Testimonials'
 import { CallToAction } from './CallToAction'
 import { Footer } from './Footer'
 
+
 const HomePage = () => {
   return (
     <div className="relative">
-    <Header/>
-     <Hero/> 
-     <LogoTicker/>
-     <ProductShowcase/>
-     <Pricing/>
-     <Testimonials/>
-     <CallToAction/>
-     <Footer/>
+      <Header   />
+      <Hero />
+      <LogoTicker />
+      <ProductShowcase />
+      <Pricing />
+      <Testimonials />
+      <CallToAction />
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
 export default HomePage
