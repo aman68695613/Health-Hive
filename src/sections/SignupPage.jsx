@@ -1,8 +1,7 @@
 import axios from 'axios'
 import  { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-
-
+import { motion } from "framer-motion";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -25,9 +24,22 @@ function LoginPage() {
     }
   }
   return(
-    <div className="flex items-center justify-center h-screen  bg-gray-900 text-white">
+    <div className="flex items-center justify-center h-screen  bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
     <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-96 ">
-      <h2 className="text-2xl font-bold text-center mb-4">SignUp</h2>
+    <motion.h2
+        animate={{
+            backgroundPositionX: "100%",
+        }}
+        transition={{
+            duration: 1,
+            repeat: Infinity,
+            ease: "linear",
+            repeatType: "loop",
+        }}
+        className="text-4xl text-center mb-8 tracking-wide bg-[linear-gradient(to_right,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF,#DD7DDF)] [background-size:200%] text-transparent bg-clip-text font-medium"
+        >
+        Register Now
+    </motion.h2>
       <form onSubmit={handleSignUpSubmit}  className="space-y-4"> 
         {/* Name Input */}
         <input

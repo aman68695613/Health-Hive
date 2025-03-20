@@ -4,6 +4,8 @@ import Lenis from 'lenis'
 import HomePage from './sections/HomePage'
 import LoginPage from './sections/LoginPage'
 import SignUpPage from './sections/SignupPage'
+import AddDoctorPage from './sections/AddDoctorPage';
+import DoctorsListPage from './sections/DoctorsListPage';
 //setting up cors 
 axios.defaults.baseURL="http://localhost:3000"
 axios.defaults.withCredentials = true 
@@ -26,6 +28,8 @@ function App() {
        <Route path='/login' element={<LoginPage/>} />
        <Route path='/signup' element={<SignUpPage/>} />
        <Route path='/user' element={<HomePage/>} />
+     <Route path='/doctors' element={<DoctorsListPage />} />
+     <Route path='/adddoctor' element={<AddDoctorPage />} />
      </Routes>
    </BrowserRouter>
   )

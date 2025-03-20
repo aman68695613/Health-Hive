@@ -144,6 +144,31 @@ app.get('/isloggedin', async (req, res) => {
   }
 });
 
+// 🟢 Create a new doctor
+app.post('/doctors', async (req, res) => {
+  const { name, speciality, fee, image } = req.body;
+  try {
+    const doctor = await prisma.doctor.create({
+      data: { name, speciality, fee: parseFloat(fee), image }
+    });
+    res.status(201).json({ message: "Doctor added successfully", doctor });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error adding doctor" });
+  }
+});
+
+// 🟢 Get all doctors
+app.get('/doctors', async (req, res) => {
+  try {
+    const doctors = await prisma.doctor.findMany();
+    res.json(doctors);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error fetching doctors" });
+  }
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
