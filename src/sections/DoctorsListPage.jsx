@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { motion } from "framer-motion";
+
 function DoctorsListPage() {
     const [doctors, setDoctors] = useState([]);
 
@@ -20,20 +20,12 @@ function DoctorsListPage() {
 return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black p-8">
     <div className="max-w-4xl w-full text-center">
-    <motion.h1
-        animate={{
-            backgroundPositionX: "100%",
-        }}
-        transition={{
-            duration: 1,
-            repeat: Infinity,
-            ease: "linear",
-            repeatType: "loop",
-        }}
-        className="text-4xl text-center mb-8 tracking-wide bg-[linear-gradient(to_right,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF,#DD7DDF)] [background-size:200%] text-transparent bg-clip-text font-medium"
+    <h1
+       
+        className="text-4xl rainbow-text text-center mb-8 tracking-wide bg-[linear-gradient(to_right,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF,#DD7DDF)] [background-size:200%] text-transparent bg-clip-text font-medium"
         >
         Our Specialists
-    </motion.h1>
+    </h1>
         <div className="flex flex-wrap gap-6 justify-center">
             {doctors.map((doctor) => (
                 <div key={doctor.id} 

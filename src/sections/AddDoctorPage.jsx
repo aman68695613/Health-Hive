@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { motion } from "framer-motion";
 function AddDoctorPage() {
   const [doctor, setDoctor] = useState({ name: '', speciality: '', fee: '', image: '' });
   const [doctors, setDoctors] = useState([]);
@@ -37,20 +36,12 @@ function AddDoctorPage() {
     <div className='flex items-center justify-center h-screen  bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white'>
          {/* Hospital Dashboard Heading */}
     <div className="max-w-md mx-auto bg-gray-800 text-white p-6 rounded-2xl shadow-lg">
-    <motion.h1
-        animate={{
-            backgroundPositionX: "100%",
-        }}
-        transition={{
-            duration: 1,
-            repeat: Infinity,
-            ease: "linear",
-            repeatType: "loop",
-        }}
-        className="text-4xl text-center mb-8 tracking-wide bg-[linear-gradient(to_right,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF,#DD7DDF)] [background-size:200%] text-transparent bg-clip-text font-medium"
+    <h1
+       
+        className="text-4xl rainbow-text text-center mb-8 tracking-wide bg-[linear-gradient(to_right,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF,#DD7DDF)] [background-size:200%] text-transparent bg-clip-text font-medium"
         >
         Hospital Dashboard
-    </motion.h1>
+    </h1>
   <h2 className="text-2xl font-semibold text-center mb-4">Add Doctor</h2>
   <form onSubmit={handleSubmit} className="space-y-4">
     <input

@@ -6,6 +6,20 @@
   --breakpoint-sm: 375px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1200px;
+  --animate-rainbow:rainbow 5s infinite ease-in-out
+ 
+}
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@utility rainbow-text {
+  background-image: linear-gradient(270deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffee, #1400ff, #ff00f2);
+  background-size: 400% 400%;
+  animation: rainbow 5s infinite ease-in-out;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 @utility container {

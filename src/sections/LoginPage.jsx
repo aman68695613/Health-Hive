@@ -2,7 +2,7 @@
 import axios from 'axios'
 import  { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { motion } from "framer-motion";
+
 function LoginPage() {
   const navigate = useNavigate();
   const [email,setEmail]=useState("")
@@ -23,20 +23,11 @@ function LoginPage() {
   return(
     <div className="flex items-center justify-center h-screen  bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
     <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-96 ">
-    <motion.h2
-        animate={{
-            backgroundPositionX: "100%",
-        }}
-        transition={{
-            duration: 1,
-            repeat: Infinity,
-            ease: "linear",
-            repeatType: "loop",
-        }}
-        className="text-4xl text-center mb-8 tracking-wide bg-[linear-gradient(to_right,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF,#DD7DDF)] [background-size:200%] text-transparent bg-clip-text font-medium"
+    <h2
+        className="text-4xl rainbow-text text-center mb-8 tracking-wide bg-[linear-gradient(to_right,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF,#DD7DDF)] [background-size:200%] text-transparent bg-clip-text font-medium"
         >
         Welcome Back
-    </motion.h2>
+    </h2>
       <form onSubmit={handleLoginSubmit} className="space-y-4">
         <input
           type="email"
