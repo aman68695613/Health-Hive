@@ -169,6 +169,31 @@ app.get('/doctors', async (req, res) => {
   }
 });
 
+app.post('/products', async (req, res) => {
+  const { name, image, price, description, rating, vendor } = req.body;
+  try {
+    const product = await prisma.product.create({
+      data: { name, image, price: parseFloat(price), description, rating: parseFloat(rating), vendor }
+    });
+    res.status(201).json({ message: 'Product added successfully', product });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error adding product' });
+  }
+});
+
+// Get all products
+app.get('/products', async (req, res) => {
+  try {
+    const products = await prisma.product.findMany();
+    res.json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error fetching products' });
+  }
+});
+
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

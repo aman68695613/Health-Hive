@@ -21,6 +21,27 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+@keyframes gradientFlow {
+  0% {
+      background-position: left bottom;
+    }
+  
+    100% {
+      background-position: top right;
+    }
+}
+@utility gradient-hover-effect {
+  background: linear-gradient(to top right, #ec4899, #8b5cf6, #3b82f6);
+  background-size: 200% 200%;
+  animation: gradientFlow 3s infinite alternate ease-in-out;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+@utitlity card-container:hover .gradient-hover-effect {
+  opacity: 1;
+}
+
+
 
 @utility container {
   margin-inline: auto;

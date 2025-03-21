@@ -6,6 +6,8 @@ import LoginPage from './sections/LoginPage'
 import SignUpPage from './sections/SignupPage'
 import AddDoctorPage from './sections/AddDoctorPage';
 import DoctorsListPage from './sections/DoctorsListPage';
+import AddProductPage from './sections/AddProductPage'; 
+import ProductsPage from './sections/ProductsPage';
 //setting up cors 
 axios.defaults.baseURL="http://localhost:3000"
 axios.defaults.withCredentials = true 
@@ -23,14 +25,16 @@ function App() {
  
   return (
      <BrowserRouter>
-     <Routes>
-       <Route path='/' element={<HomePage/>} />
-       <Route path='/login' element={<LoginPage/>} />
-       <Route path='/signup' element={<SignUpPage/>} />
-       <Route path='/user' element={<HomePage/>} />
-     <Route path='/doctors' element={<DoctorsListPage />} />
-     <Route path='/adddoctor' element={<AddDoctorPage />} />
-     </Routes>
+      <Routes>
+        <Route path='/' element={<HomePage />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/signup' element={<SignUpPage />} />
+        <Route path='/user' element={<HomePage />} />
+        <Route path='/doctors' element={<DoctorsListPage />} />
+        <Route path='/adddoctor' element={<AddDoctorPage />} />
+        <Route path='/addproduct' element={<AddProductPage />} />
+        <Route path='/products' element={<ProductsPage />} />
+      </Routes>
    </BrowserRouter>
   )
 }

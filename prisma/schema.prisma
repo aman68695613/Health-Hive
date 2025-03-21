@@ -28,3 +28,13 @@ model Doctor {
   image       String?  // URL to doctor's image
   createdAt   DateTime @default(now())
 }
+model Product {
+  id          Int     @id @default(autoincrement())
+  name        String
+  image       String
+  price       Float
+  description String
+  rating      Float
+  vendor      String
+  createdAt   DateTime @default(now())
+}
