@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-rotatedmarker";
+import Swal from "sweetalert2"; // ✅ at the top
 
 import io from "socket.io-client";
 import axios from "axios";
@@ -72,32 +73,38 @@ const AmbulanceBookingPage = () => {
     };
   }, []);
 
+
   const bookAmbulance = async (ambulance) => {
     const userId = parseInt(localStorage.getItem("userId"), 10);
-  
     setSelectedAmbulance(ambulance); // 🔥 Set selected ambulance
   
     try {
       const response = await axios.post("http://localhost:3000/api/book", {
         ambulanceId: ambulance.id,
         userId,
-        userLocation, // ✅ send it to backend
+        userLocation,
       });
-      
   
       console.log("Ambulance booked", response.data);
   
-      // 🔥 Emit userLocation to trigger backend simulation
+      
       socket.emit("userLocation", {
         ...userLocation,
-        ambulanceId: ambulance.id, // 🔥 Pass ambulanceId to backend
+        ambulanceId: ambulance.id,
       });
-  
+      // ✅ Show popup
+      Swal.fire({
+        title: "Ambulance Booked!",
+        text: "Your ambulance is on the way. Stay safe!",
+        icon: "success",
+        confirmButtonColor: "#6366f1", // indigo
+      });
     } catch (error) {
       console.error("Error booking ambulance:", error);
-      alert("Failed to book ambulance. Please try again.");
+      Swal.fire("Failed", "Booking failed. Please try again.", "error");
     }
   };
+  
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#b2bdc9] via-[#4f6c91] to-[#9e9eca] p-6">
@@ -133,7 +140,7 @@ const AmbulanceBookingPage = () => {
                     <Popup>
                       <strong>Driver:</strong> {selectedAmbulance.driverName}
                       <br />
-                      <strong>Price:</strong> ₹{selectedAmbulance.price}
+                      <strong>Price:</strong> +91 {selectedAmbulance.phone}
                     </Popup>
                   </Marker>
                 )}
@@ -147,24 +154,49 @@ const AmbulanceBookingPage = () => {
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
             {ambulances.map((ambulance) => (
-              <div
-                key={ambulance.id}
-                className="rounded-xl bg-gradient-to-br from-[#fdfbfb] to-[#ebedee] p-6 shadow-lg border border-gray-200"
-              >
-                <p className="font-medium text-gray-800">
-                  <strong>Driver:</strong> {ambulance.driverName}
-                </p>
-                <p className="text-gray-600 mt-1">
-                  <strong>Price:</strong> ₹{ambulance.price}
-                </p>
-                <button
-                  className="mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full shadow hover:scale-105 transition-all"
-                  onClick={() => bookAmbulance(ambulance)} // 🔥 booking flow trigger
-                >
-                  Book Now
-                </button>
-              </div>
-            ))}
+              
+  <div
+  key={ambulance.id}
+  className={`rounded-xl p-6 shadow-lg border transition-all ${
+    selectedAmbulance && selectedAmbulance.id !== ambulance.id
+      ? "bg-gray-200 opacity-50 pointer-events-none"
+      : "bg-gradient-to-br from-[#fdfbfb] to-[#ebedee]"
+  }`}
+>
+  {/* ✅ Driver Image */}
+  <img 
+    src={ambulance.image} 
+    alt={`${ambulance.driverName}`} 
+    className="w-20 h-20 object-cover rounded-full mb-4 border-2 border-blue-400"
+  />
+
+  {/* ✅ Driver Info */}
+  <p className="font-medium text-gray-800">
+    <strong>Driver:</strong> {ambulance.driverName}
+  </p>
+  <p className="text-gray-700 mt-1">
+    <strong>Phone:</strong> {ambulance.phone}
+  </p>
+  <p className="text-gray-600 mt-1">
+    <strong>Price:</strong> ₹{ambulance.price}
+  </p>
+
+  {/* ✅ Button logic */}
+  <button
+    className={`mt-4 px-4 py-2 rounded-full shadow transition-all text-white ${
+      selectedAmbulance?.id === ambulance.id
+        ? "bg-green-500 cursor-not-allowed"
+        : "bg-gradient-to-r from-purple-500 to-pink-500 hover:scale-105"
+    }`}
+    disabled={!!selectedAmbulance}
+    onClick={() => bookAmbulance(ambulance)}
+  >
+    {selectedAmbulance?.id === ambulance.id ? "Booked!" : "Book Now"}
+  </button>
+</div>
+
+))}
+
           </div>
         </div>
       </div>

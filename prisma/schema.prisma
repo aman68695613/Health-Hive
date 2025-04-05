@@ -66,6 +66,8 @@ model Ambulance {
   price       Float
   available   Boolean @default(true)
   location    Location?
+  phone       String?     // ✅ Added
+  image       String?     // ✅ Added (store image URL)
   bookings    Booking[]
 }
 
