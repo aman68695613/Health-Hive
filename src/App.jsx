@@ -9,6 +9,7 @@ import DoctorsListPage from './sections/DoctorsListPage';
 import AddProductPage from './sections/AddProductPage'; 
 import ProductsPage from './sections/ProductsPage';
 import AmbulanceBookingPage from "./sections/AmbulanceBookingPage";
+import DoctorRev from "./sections/DoctorRev";
 //setting up cors 
 axios.defaults.baseURL="http://localhost:3000"
 axios.defaults.withCredentials = true 
@@ -35,6 +36,7 @@ function App() {
         <Route path='/adddoctor' element={<AddDoctorPage />} />
         <Route path='/addproduct' element={<AddProductPage />} />
         <Route path='/products' element={<ProductsPage />} />
+        <Route path='/doctorrev' element={<DoctorRev />} />
         <Route path="/ambulance-booking" element={<AmbulanceBookingPage />} />
       </Routes>
    </BrowserRouter>

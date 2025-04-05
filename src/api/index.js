@@ -310,7 +310,9 @@ app.get('/doctors', async (req, res) => {
 // Add review
 app.post('/reviews', async (req, res) => {
   const { rating, text, userId, doctorId } = req.body;
+
   try {
+    // Create the review
     const review = await prisma.review.create({
       data: {
         rating,
@@ -319,12 +321,26 @@ app.post('/reviews', async (req, res) => {
         doctorId
       }
     });
-    res.status(201).json({ message: 'Review added successfully', review });
+
+    // Calculate the new average rating for the doctor
+    const { _avg } = await prisma.review.aggregate({
+      where: { doctorId },
+      _avg: { rating: true }
+    });
+
+    const averageRating = _avg.rating || 0;
+
+    res.status(201).json({ 
+      message: 'Review added successfully', 
+      review, 
+      averageRating 
+    });
   } catch (error) {
     console.error('Error adding review:', error);
     res.status(500).json({ error: 'Error adding review' });
   }
 });
+
 
 // Add surgery
 app.post('/surgeries', async (req, res) => {
