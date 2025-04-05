@@ -12,14 +12,19 @@ function LoginPage() {
     e.preventDefault()
     try{
         const data=await axios.post('/login',{email,password}) 
+        const userId=localStorage.setItem('userId',data.data.user.id)
+        console.log(data.data.user)
         alert("Login successful")
         console.log(data)
         navigate('/user')  
     }catch(e){
-      alert("Login failed",e)
+      alert("Login failed: " + (e.response?.data?.error || e.message));
+  }
     }
     
-  }
+  
+  
+
   return(
     <div className="flex items-center justify-center h-screen  bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
     <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-96 ">

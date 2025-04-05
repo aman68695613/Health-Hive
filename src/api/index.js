@@ -6,19 +6,174 @@ import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-
+import http from "http"; // ✅ Required for WebSockets
+import axios from "axios"; // ✅ Add at top
+import { Server } from "socket.io"; // ✅ WebSocket server
 const app = express();
-const prisma = new PrismaClient();
+
 
 app.use(cors({
   credentials: true,
-  origin: 'http://localhost:5173'
-}));
+  origin:"http://localhost:5173"
+}))
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    credentials: true,
+  },
+});
 app.use(cookieParser());
 app.use(express.json());
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
-const PORT = process.env.PORT || 3000;
+// eslint-disable-next-line no-undef
+const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
+const PORT=process.env.PORT||3000;
+const prisma = new PrismaClient()
+
+
+// ✅ Store ambulance locations (In-memory for now)
+const ambulanceLocations = new Map();
+
+/* ✅ ADD THIS: Simulated movement function */
+async function moveAmbulanceTowardsUser(io, ambulanceId, start, end, durationMs = 60000) {
+  try {
+    // 🧭 Step 1: Fetch route coordinates using OSRM
+    const url = `http://router.project-osrm.org/route/v1/driving/${start.lng},${start.lat};${end.lng},${end.lat}?overview=full&geometries=geojson`;
+    const res = await axios.get(url);
+
+    const coords = res.data.routes[0].geometry.coordinates;
+    const steps = coords.length;
+    const intervalTime = durationMs / steps;
+
+    let step = 0;
+
+    const interval = setInterval(() => {
+      if (step >= steps) {
+        clearInterval(interval);
+        return;
+      }
+
+      const [lng, lat] = coords[step];
+
+      io.emit("ambulanceLocationUpdate", {
+        ambulanceId,
+        lat,
+        lng,
+      });
+
+      step++;
+    }, intervalTime);
+  } catch (err) {
+    console.error("Error fetching route from OSRM:", err.message);
+  }
+}
+/* ------------- 🟢 Socket.io for real-time location updates ------------- */
+io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
+
+  // Receive real-time location updates from the ambulance driver
+  socket.on("updateLocation", (data) => {
+    ambulanceLocations.set(data.ambulanceId, { lat: data.lat, lng: data.lng });
+
+    // Broadcast new location to all clients
+    io.emit("ambulanceLocationUpdate", {
+      ambulanceId: data.ambulanceId,
+      lat: data.lat,
+      lng: data.lng,
+    });
+  });
+
+  socket.on("disconnect", () => {
+    console.log("A user disconnected:", socket.id);
+  });
+});
+
+/* ------------- 🟢 Routes ------------- */
+
+// 🟢 Get all ambulances
+app.get("/api/ambulances", async (req, res) => {
+  try {
+    const ambulances = await prisma.ambulance.findMany();
+    res.json(ambulances);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error fetching ambulances" });
+  }
+});
+
+// 🟢 Book an ambulance
+app.post("/api/book", async (req, res) => {
+  // const { ambulanceId, userId } = req.body;
+  const { ambulanceId, userId, userLocation } = req.body;
+
+
+  try {
+    // Check if ambulance exists
+    const ambulance = await prisma.ambulance.findUnique({ where: { id: ambulanceId } });
+    if (!ambulance) return res.status(404).json({ error: "Ambulance not found" });
+
+    // Create booking record
+    const booking = await prisma.booking.create({
+      data: { ambulanceId, userId, status: "booked" },
+    });
+
+    // 🔄 Start movement from a random nearby location
+    const randomStart = {
+      lat: userLocation.lat - 0.01 + Math.random() * 0.02,
+      lng: userLocation.lng - 0.01 + Math.random() * 0.02,
+    };
+    
+    moveAmbulanceTowardsUser(io, ambulanceId, randomStart, userLocation);
+    res.status(201).json({ message: "Ambulance booked successfully", booking });
+
+    // Notify driver (you can extend this to notify drivers in real apps)
+    // io.emit("ambulanceBooked", { ambulanceId, userId });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error booking ambulance" });
+  }
+});
+
+// 🟢 Get ambulance location (Real-time)
+app.get("/api/ambulance-location/:ambulanceId", (req, res) => {
+  const { ambulanceId } = req.params;
+  const location = ambulanceLocations.get(ambulanceId);
+  res.json(location || { error: "Location not available" });
+});
+
+
+app.get('/', (req,res)=>{
+    res.send('Hello from the server!');
+})
+app.post("/create-user", async (req, res) => {
+    const { email, name } = req.body;
+  
+    try {
+      const user = await prisma.user.create({
+        data: {
+          email,
+          name,
+        },
+      });
+  
+      res.status(201).json({ message: "User created successfully", user });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Error creating user" });
+    }
+  });
+  
+  // 🟢 Route to fetch all users 
+  app.get("/users", async (req, res) => {
+    try {
+      const users = await prisma.user.findMany();
+      res.json(users);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Error fetching users" });
+    }
+  });
 
 // Root
 app.get('/', (req, res) => {
@@ -77,8 +232,8 @@ app.post('/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
 
-    const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
-    res.cookie('auth_token', token, { httpOnly: true });
+      // Generate JWT token
+      const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '24h' });
 
     res.json({ message: 'Login successful', user, token });
   } catch (error) {
@@ -90,6 +245,7 @@ app.post('/login', async (req, res) => {
 // Logout
 app.post('/logout', (req, res) => {
   res.clearCookie('auth_token');
+  // res.clearCookie('userId');
   res.json({ message: 'Logged out successfully' });
 });
 
@@ -218,7 +374,6 @@ app.get('/products', async (req, res) => {
   }
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+server.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
