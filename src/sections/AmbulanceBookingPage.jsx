@@ -140,7 +140,7 @@ const AmbulanceBookingPage = () => {
                     <Popup>
                       <strong>Driver:</strong> {selectedAmbulance.driverName}
                       <br />
-                      <strong>Price:</strong> +91 {selectedAmbulance.phone}
+                      <strong>Phone:</strong> +91 {selectedAmbulance.phone}
                     </Popup>
                   </Marker>
                 )}
