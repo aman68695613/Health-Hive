@@ -293,16 +293,19 @@ app.get('/doctors', async (req, res) => {
   try {
     const doctors = await prisma.doctor.findMany({
       include: {
-        reviews: true,
-        surgeries: true
+        Review: true,   // ✅ match exactly as in your schema
+        Surgery: true   // ✅ case-sensitive
       }
     });
     res.json(doctors);
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching doctors:', error.message, error.stack);
     res.status(500).json({ error: 'Error fetching doctors' });
   }
 });
+
+
+
 
 // Add review
 app.post('/reviews', async (req, res) => {
