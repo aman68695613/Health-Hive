@@ -9,6 +9,10 @@ import DoctorsListPage from './sections/DoctorsListPage';
 import AddProductPage from './sections/AddProductPage'; 
 import ProductsPage from './sections/ProductsPage';
 import AmbulanceBookingPage from "./sections/AmbulanceBookingPage";
+// 🆕 Import new queue pages
+import HospitalQueueManagementPage from './sections/HospitalQueueManager';
+import PatientQueueStatusPage from './sections/PatientQueueStatus';
+
 //setting up cors 
 axios.defaults.baseURL="http://localhost:3000"
 axios.defaults.withCredentials = true 
@@ -23,7 +27,8 @@ lenis.on('scroll', (e) => {
 });
 
 function App() {
- 
+  const userId = parseInt(localStorage.getItem("userId"), 10);
+  const randomHospitalId = Math.random() < 0.5 ? 1 : 2;
   return (
      <BrowserRouter>
       <Routes>
@@ -36,6 +41,8 @@ function App() {
         <Route path='/addproduct' element={<AddProductPage />} />
         <Route path='/products' element={<ProductsPage />} />
         <Route path="/ambulance-booking" element={<AmbulanceBookingPage />} />
+        <Route path="/hospital-queues" element={<HospitalQueueManagementPage hospitalId={randomHospitalId}/>} />
+        <Route path="/patient-queue" element={<PatientQueueStatusPage userId={userId} />} />
       </Routes>
    </BrowserRouter>
   )
