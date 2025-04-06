@@ -13,10 +13,11 @@ function LoginPage() {
     try{
         const data=await axios.post('/login',{email,password}) 
         const userId=localStorage.setItem('userId',data.data.user.id)
+        const username=localStorage.setItem('username',data.data.user.name)
         console.log(data.data.user)
         alert("Login successful")
         console.log(data)
-        navigate('/user')  
+        navigate('/')  
     }catch(e){
       alert("Login failed: " + (e.response?.data?.error || e.message));
   }

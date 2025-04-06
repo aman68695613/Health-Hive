@@ -6,17 +6,18 @@ import LoginPage from './sections/LoginPage'
 import SignUpPage from './sections/SignupPage'
 import AddDoctorPage from './sections/AddDoctorPage';
 import DoctorsListPage from './sections/DoctorsListPage';
-import AddProductPage from './sections/AddProductPage'; 
+import AddProductPage from './sections/AddProductPage';
 import ProductsPage from './sections/ProductsPage';
 import AmbulanceBookingPage from "./sections/AmbulanceBookingPage";
 // 🆕 Import new queue pages
 import HospitalQueueManagementPage from './sections/HospitalQueueManager';
 import PatientQueueStatusPage from './sections/PatientQueueStatus';
-
+import ProtectedRoute from "./sections/ProtectedRoute"; // ✅
+import Layout from './sections/Layout'; // ✅ import Layout
 import DoctorRev from "./sections/DoctorRev";
 //setting up cors 
-axios.defaults.baseURL="http://localhost:3000"
-axios.defaults.withCredentials = true 
+axios.defaults.baseURL = "http://localhost:3000"
+axios.defaults.withCredentials = true
 // Initialize Lenis
 const lenis = new Lenis({
   autoRaf: true,
@@ -30,24 +31,46 @@ lenis.on('scroll', (e) => {
 function App() {
   const userId = parseInt(localStorage.getItem("userId"), 10);
   const randomHospitalId = Math.random() < 0.5 ? 1 : 2;
+
   return (
-     <BrowserRouter>
+    <BrowserRouter>
       <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/signup' element={<SignUpPage />} />
-        <Route path='/user' element={<HomePage />} />
-        <Route path='/doctors' element={<DoctorsListPage />} />
-        <Route path='/adddoctor' element={<AddDoctorPage />} />
-        <Route path='/addproduct' element={<AddProductPage />} />
-        <Route path='/products' element={<ProductsPage />} />
-        <Route path='/doctorrev' element={<DoctorRev />} />
-        <Route path="/ambulance-booking" element={<AmbulanceBookingPage />} />
-        <Route path="/hospital-queues" element={<HospitalQueueManagementPage hospitalId={randomHospitalId}/>} />
-        <Route path="/patient-queue" element={<PatientQueueStatusPage userId={userId} />} />
+        {/* Public routes */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+
+        <Route path="/" element={<HomePage />} />
+
+        <Route path="/user" element={
+          <ProtectedRoute><Layout><HomePage /></Layout></ProtectedRoute>
+        } />
+        <Route path="/doctors" element={
+          <ProtectedRoute><Layout><DoctorsListPage /></Layout></ProtectedRoute>
+        } />
+        <Route path="/adddoctor" element={
+          <ProtectedRoute><Layout><AddDoctorPage /></Layout></ProtectedRoute>
+        } />
+        <Route path="/addproduct" element={
+          <ProtectedRoute><Layout><AddProductPage /></Layout></ProtectedRoute>
+        } />
+        <Route path="/products" element={
+          <ProtectedRoute><Layout><ProductsPage /></Layout></ProtectedRoute>
+        } />
+        <Route path="/doctorrev" element={
+          <ProtectedRoute><Layout><DoctorRev /></Layout></ProtectedRoute>
+        } />
+        <Route path="/ambulance-booking" element={
+          <ProtectedRoute><Layout><AmbulanceBookingPage /></Layout></ProtectedRoute>
+        } />
+        <Route path="/hospital-queues" element={
+          <ProtectedRoute><Layout><HospitalQueueManagementPage hospitalId={randomHospitalId} /></Layout></ProtectedRoute>
+        } />
+        <Route path="/patient-queue" element={
+          <ProtectedRoute><Layout><PatientQueueStatusPage userId={userId} /></Layout></ProtectedRoute>
+        } />
       </Routes>
-   </BrowserRouter>
-  )
+    </BrowserRouter>
+  );
 }
 
 export default App

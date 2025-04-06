@@ -28,6 +28,7 @@ export const Header = () => {
   const handleLogout = async () => {
     try {
       await axios.post("/logout");
+      localStorage.clear();
       setIsLoggedIn(false); // Clear authentication state
       navigate("/login"); // Redirect to login
     } catch (error) {
