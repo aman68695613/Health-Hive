@@ -1,49 +1,53 @@
 import { useState } from 'react';
 
 const hospitals = [
-  'Apollo, Delhi',
-  'Fortis, Mumbai',
-  'AIIMS, Delhi',
-  'Medanta, Gurugram',
-  'Narayana, Bangalore',
-  'CMC, Vellore',
-  'Max, Noida',
-  'Manipal, Manipal',
-  'Sankara, Coimbatore',
-  'Tata Memorial, Mumbai'
+  'Apollo, Delhi', 'Fortis, Mumbai', 'AIIMS, Delhi',
+  'Medanta, Gurugram', 'Narayana, Bangalore', 'CMC, Vellore',
+  'Max, Noida', 'Manipal, Manipal', 'Sankara, Coimbatore', 'Tata Memorial, Mumbai'
 ];
 
 const doctors = Array.from({ length: 30 }).map((_, i) => {
-  const reviews = [
-    {
-      name: ['Sakura', 'Naruto', 'Luffy'][i % 3],
-      comment: 'Excellent treatment!',
-      rating: 4 + (i % 2),
-      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${i + 1}`
-    },
-    {
-      name: ['Ichigo', 'Goku', 'Mikasa'][(i + 1) % 3],
-      comment: 'Very professional and caring.',
-      rating: 3 + (i % 3),
-      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${i + 10}`
-    },
-    {
-      name: ['Levi', 'Hinata', 'Inuyasha'][(i + 2) % 3],
-      comment: 'Helped me recover quickly!',
-      rating: 4 + ((i + 1) % 2),
-      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${i + 20}`
-    },
-  ];
+  const base = 1000 + i * 50;
 
   return {
     id: i + 1,
     name: `Dr. ${['Ananya', 'Ravi', 'Kavita', 'Amit', 'Sneha', 'Rahul', 'Priya', 'Vikram', 'Neha', 'Suresh'][i % 10]}`,
     speciality: ['Heart Surgery', 'Neuro Surgery', 'Orthopedic Surgery', 'Eye Surgery'][i % 4],
-    fee: (1000 + i * 50).toFixed(0),
+    fee: base.toFixed(0),
     location: hospitals[i % hospitals.length],
-    reviews,
+    breakdown: {
+      procedure: (0.3 * base).toFixed(0),
+      ot: (0.2 * base).toFixed(0),
+      instruments: (0.1 * base).toFixed(0),
+      drugs: (0.1 * base).toFixed(0),
+      anesthesia: (0.05 * base).toFixed(0),
+      recovery: (0.05 * base).toFixed(0),
+      nursing: (0.05 * base).toFixed(0),
+      room: (0.1 * base).toFixed(0),
+      misc: (0.05 * base).toFixed(0)
+    },
+    reviews: [
+      {
+        name: ['Sakura', 'Naruto', 'Luffy'][i % 3],
+        comment: 'Excellent treatment!',
+        rating: 4 + (i % 2),
+        avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${i + 1}`
+      },
+      {
+        name: ['Ichigo', 'Goku', 'Mikasa'][(i + 1) % 3],
+        comment: 'Very professional and caring.',
+        rating: 3 + (i % 3),
+        avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${i + 10}`
+      },
+      {
+        name: ['Levi', 'Hinata', 'Inuyasha'][(i + 2) % 3],
+        comment: 'Helped me recover quickly!',
+        rating: 4 + ((i + 1) % 2),
+        avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${i + 20}`
+      }
+    ],
     avgRating: (
-      reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
+      ['Sakura', 'Naruto', 'Luffy'][i % 3] === 'Naruto' ? 4.8 : 4.2
     ).toFixed(1)
   };
 });
@@ -54,6 +58,7 @@ export default function DoctorReviews() {
   const [expandedId, setExpandedId] = useState(null);
   const [surgeryFilter, setSurgeryFilter] = useState('All');
   const [sortOrder, setSortOrder] = useState('desc');
+  const [showBreakdownId, setShowBreakdownId] = useState(null);
 
   const filtered = doctors
     .filter((doc) =>
@@ -99,16 +104,18 @@ export default function DoctorReviews() {
       {/* Doctor Cards */}
       {filtered.map((doc) => {
         const isOpen = expandedId === doc.id;
+        const showBreakdown = showBreakdownId === doc.id;
+
         return (
           <div
             key={doc.id}
             onClick={() => setExpandedId(isOpen ? null : doc.id)}
             className={`transition-all duration-300 cursor-pointer overflow-hidden rounded-2xl border border-gray-700 bg-gray-800 shadow-md hover:shadow-2xl ${
-              isOpen ? 'h-64 md:h-72' : 'h-28'
-            } w-full flex items-center`}
+              isOpen ? 'h-auto py-4' : 'h-28'
+            } w-full flex flex-col md:flex-row items-start`}
           >
-            {/* Left: Doctor DP */}
-            <div className="min-w-[110px] h-full flex items-center justify-center">
+            {/* Doctor Image */}
+            <div className="min-w-[110px] h-full flex items-center justify-center mx-auto md:mx-0 mt-4 md:mt-0">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
                 alt={doc.name}
@@ -116,14 +123,39 @@ export default function DoctorReviews() {
               />
             </div>
 
-            {/* Middle: Doctor Info */}
+            {/* Doctor Info */}
             <div className="flex-1 px-6 py-4 text-white">
               <h2 className="text-xl font-semibold">{doc.name}</h2>
-              <p className="text-sm text-blue-400">🩺 {doc.speciality}</p>
+              <p
+                className="text-sm text-blue-400 cursor-pointer underline hover:text-blue-300"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowBreakdownId(showBreakdown ? null : doc.id);
+                }}
+              >
+                🩺 {doc.speciality}
+              </p>
               <p className="text-sm text-gray-300 mt-1">🏥 {doc.location}</p>
               <p className="text-sm text-green-400 mt-1">💰 ₹{doc.fee}</p>
               <p className="text-sm text-yellow-400 mt-1">⭐ {doc.avgRating} / 5</p>
 
+              {/* Cost Breakdown */}
+              {showBreakdown && (
+                <div className="mt-3 text-sm bg-gray-700 rounded-lg p-3 space-y-1">
+                  <p className="text-pink-300 font-semibold">💸 Surgery Cost Breakdown:</p>
+                  <p className="text-gray-200">• Procedure: ₹{doc.breakdown.procedure}</p>
+                  <p className="text-gray-200">• OT Charges: ₹{doc.breakdown.ot}</p>
+                  <p className="text-gray-200">• Instruments: ₹{doc.breakdown.instruments}</p>
+                  <p className="text-gray-200">• Drugs & Consumables: ₹{doc.breakdown.drugs}</p>
+                  <p className="text-gray-200">• Anesthesia: ₹{doc.breakdown.anesthesia}</p>
+                  <p className="text-gray-200">• Recovery Room: ₹{doc.breakdown.recovery}</p>
+                  <p className="text-gray-200">• Nursing: ₹{doc.breakdown.nursing}</p>
+                  <p className="text-gray-200">• Hospital Stay: ₹{doc.breakdown.room}</p>
+                  <p className="text-gray-200">• Miscellaneous: ₹{doc.breakdown.misc}</p>
+                </div>
+              )}
+
+              {/* Reviews */}
               {isOpen && (
                 <div className="mt-4 flex flex-col md:flex-row gap-4">
                   {doc.reviews.map((rev, idx) => (
@@ -151,6 +183,8 @@ export default function DoctorReviews() {
     </div>
   );
 }
+
+
 
 
 
