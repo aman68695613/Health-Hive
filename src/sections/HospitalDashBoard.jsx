@@ -66,6 +66,12 @@ const services = [
       route: "/products",
       description: "...",
     },
+    {
+      title: "Current Queues ",
+      icon: CiBoxList,
+      route: "/hospital-queues",
+      description: "...",
+    },
   ];
   
 
