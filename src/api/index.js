@@ -393,6 +393,129 @@ app.get('/products', async (req, res) => {
   }
 });
 
+
+
+
+//Queue routes
+
+app.get("/api/hospitals/:id/queues", async (req, res) => {
+  const { id } = req.params;
+  const queues = await prisma.queue.findMany({
+    where: { hospitalId: parseInt(id) },
+    include: {
+      patients: {
+        include: { user: true },
+        orderBy: { joinedAt: "asc" },
+      },
+    },
+  });
+  res.json(queues);
+});
+
+app.get("/api/hospitals", async (req, res) => {
+  try {
+    const hospitals = await prisma.hospital.findMany();
+    res.json(hospitals);
+  } catch (error) {
+    console.error("Error fetching hospitals:", error);
+    res.status(500).json({ error: "Error fetching hospitals" });
+  }
+});
+
+
+app.post("/api/queues/:queueId/next", async (req, res) => {
+  const queueId = parseInt(req.params.queueId);
+  const nextEntry = await prisma.queueEntry.findFirst({
+    where: {
+      queueId,
+      status: "waiting",
+    },
+    orderBy: { id: "asc" },
+    include: { user: true },
+  });
+
+  if (!nextEntry) {
+    return res.json({ message: "No more users in queue" });
+  }
+
+  await prisma.queueEntry.update({
+    where: { id: nextEntry.id },
+    data: { status: "consulting" },
+  });
+
+  io.emit("queueUpdate"); // notify real-time clients
+
+  res.json({
+    message: "Next user marked as consulting",
+    transferredUser: { id: nextEntry.user.id, name: nextEntry.user.name },
+  });
+});
+
+
+
+app.get("/api/patient/:id/queues", async (req, res) => {
+  const userId = parseInt(req.params.id);
+  const entries = await prisma.queueEntry.findMany({
+    where: { userId, status: "waiting" },
+    include: {
+      queue: {
+        include: { hospital: true, patients: true },
+      },
+    },
+  });
+
+  const data = entries.map((entry) => {
+    const sorted = [...entry.queue.patients].sort((a, b) =>
+      new Date(a.joinedAt) - new Date(b.joinedAt)
+    );
+    const position = sorted.findIndex((p) => p.id === entry.id) + 1;
+    return {
+      queue: entry.queue,
+      position,
+      eta:  position * (Math.floor(Math.random() * 11) + 5), // Assume 5 mins per consultation
+    };
+  });
+
+  res.json(data);
+});
+
+app.post("/api/seed", async (req, res) => {
+  try {
+  
+    const h1 = await prisma.hospital.create({ data: { name: "HealthBridge" } });
+    const h2 = await prisma.hospital.create({ data: { name: "CareWell Clinic" } });
+
+    const q1 = await prisma.queue.create({ data: { type: "General", hospitalId: h1.id } });
+    const q2 = await prisma.queue.create({ data: { type: "Dermatology", hospitalId: h2.id } });
+
+    const users = await Promise.all(
+      Array.from({ length: 5 }).map((_, i) =>
+        prisma.user.create({
+          data: {
+            email: `test${i}@mail.com`,
+            name: `Test User ${i}`,
+            password: "dummy",
+          },
+        })
+      )
+    );
+
+    await prisma.queueEntry.createMany({
+      data: [
+        { queueId: q1.id, userId: users[0].id },
+        { queueId: q1.id, userId: users[1].id },
+        { queueId: q2.id, userId: users[2].id },
+        { queueId: q2.id, userId: users[3].id },
+      ],
+    });
+
+    res.json({ message: "Dummy data inserted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to seed" });
+  }
+});
+
 server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
