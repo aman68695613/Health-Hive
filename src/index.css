@@ -30,6 +30,14 @@
       background-position: top right;
     }
 }
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 4s ease infinite;
+}
 @utility gradient-hover-effect {
   background: linear-gradient(to top right, #ec4899, #8b5cf6, #3b82f6);
   background-size: 200% 200%;
@@ -37,6 +45,7 @@
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
+
 @utitlity card-container:hover .gradient-hover-effect {
   opacity: 1;
 }

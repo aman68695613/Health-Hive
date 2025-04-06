@@ -34,6 +34,8 @@ const prisma = new PrismaClient()
 
 // ✅ Store ambulance locations (In-memory for now)
 const ambulanceLocations = new Map();
+const users = new Map(); // ✅ Stores connected users: socketId -> { userId, role }
+
 
 /* ✅ ADD THIS: Simulated movement function */
 async function moveAmbulanceTowardsUser(io, ambulanceId, start, end, durationMs = 60000) {
@@ -71,6 +73,21 @@ async function moveAmbulanceTowardsUser(io, ambulanceId, start, end, durationMs 
 /* ------------- 🟢 Socket.io for real-time location updates ------------- */
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
+  //chats  
+  socket.on("register", ({ userId, role }) => {
+    users.set(socket.id, { userId, role });
+    socket.join(`user-${userId}`); // Join user-specific room
+  });
+
+  socket.on("sendMessage", ({ senderId, receiverId, message }) => {
+    const timestamp = new Date().toISOString();
+    io.to(`user-${receiverId}`).emit("receiveMessage", {
+      senderId,
+      message,
+      timestamp,
+    });
+  });
+
 
   // Receive real-time location updates from the ambulance driver
   socket.on("updateLocation", (data) => {
