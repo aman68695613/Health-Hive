@@ -17,7 +17,6 @@ const HomePage = () => {
       <Hero />
       <LogoTicker />
       <ProductShowcase />
-      <Pricing />
       <Testimonials />
       <CallToAction />
       <Footer />

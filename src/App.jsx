@@ -17,6 +17,8 @@ import Layout from './sections/Layout'; // ✅ import Layout
 import DoctorRev from "./sections/DoctorRev";
 import ChatPage from "./sections/ChatPage";
 import DoctorChatPage from "./sections/DoctorChatPage";
+import BasePage from './sections/BasePage';
+import PatientDashboard from "./sections/PatientDashboard";
 //setting up cors 
 axios.defaults.baseURL = "http://localhost:3000"
 axios.defaults.withCredentials = true
@@ -66,6 +68,12 @@ function App() {
         } />
         <Route path="/hospital-queues" element={
           <ProtectedRoute><Layout><HospitalQueueManagementPage hospitalId={randomHospitalId} /></Layout></ProtectedRoute>
+        } />
+        <Route path="/basepage" element={
+          <ProtectedRoute><Layout><BasePage/></Layout></ProtectedRoute>
+        } />
+        <Route path="/patient-dashboard" element={
+          <ProtectedRoute><Layout><PatientDashboard/></Layout></ProtectedRoute>
         } />
         <Route path="/patient-queue" element={
           <ProtectedRoute><Layout><PatientQueueStatusPage userId={userId} /></Layout></ProtectedRoute>
