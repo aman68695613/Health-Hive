@@ -47,7 +47,7 @@ export const Header = () => {
           <MenuIcon className="h-5 w-5 md:hidden" />
           <nav className="hidden md:flex gap-6 text-black/60 items-center dark:text-white">
             <a href="#">About</a>
-            <a href="/basepage">Home</a>
+            <a href="/basepage">Services</a>
             <a href="#">Customers</a>
             <a href="#">Updates</a>
             <a href="#">Help</a>
