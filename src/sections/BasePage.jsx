@@ -29,15 +29,11 @@ function BasePage() {
     <div className="flex flex-col min-h-screen">
       {/* Navbar */}
       <nav className="bg-blue-800 text-white px-6 py-4 flex items-center justify-between">
+        <Link to="/" className="text-white">
         <h1 className="text-xl font-bold">Dashboard</h1>
+        </Link>
         <div className="flex gap-4">
-          <a href="/" className="hover:underline">Home</a>
-          <a href="/doctors" className="hover:underline">Consultation</a>
-          <a href="/doctorrev" className="hover:underline">Surgery</a>
-          <a href="/ambulance-booking" className="hover:underline">Ambulance</a>
-          <a href="/adddoctor" className="hover:underline">Register Doctor</a>
-          <a href="/products" className="hover:underline">Oxygen</a>
-          
+            
         </div>
         <div className="flex items-center gap-2">
           <input type="text" placeholder="Search" className="rounded px-2 py-1" />
@@ -49,7 +45,7 @@ function BasePage() {
       {/* Cards Section */}
       <div className="flex justify-center items-center min-h-[80vh] px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 w-full max-w-7xl">
-          
+        <Link to="/hospital-dashboard" className="block">
           {/* 🏥 Hospital Card */}
           <div className="group relative bg-gray-100 hover:bg-gray-200 rounded-2xl shadow-2xl transition-all duration-300 h-[500px] w-full overflow-hidden">
             <div className="absolute inset-0 transition-opacity duration-300 group-hover:opacity-0">
@@ -78,6 +74,7 @@ function BasePage() {
               </div>
             </div>
           </div>
+          </Link>
 
           {/* 👤 Patient Card with Link */}
           <Link to="/patient-dashboard" className="block">

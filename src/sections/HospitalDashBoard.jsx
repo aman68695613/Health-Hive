@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 export default function App() {
   return (
     <main className="min-h-screen bg-gray-50">
-      <PatientDashboard />
+      <HospitalDashboard />
     </main>
   );
 }
@@ -25,9 +25,10 @@ function Navbar() {
   return (
     <nav className="bg-[#2B579A] text-white p-6 rounded-xl mb-12">
       <div className="container mx-auto flex items-center justify-between">
-      <Link to="/">
-        <h1 className="text-2xl font-semibold">Patient Dashboard</h1>
+        <Link to="/">
+        <h1 className="text-2xl font-semibold">Hospital Dashboard</h1>
         </Link>
+
         <div className="flex items-center space-x-8">
           <a href="/" className="hover:text-gray-200">Home</a>
           <a href="/" className="hover:text-gray-200">Medical Records</a>
@@ -50,31 +51,19 @@ function Navbar() {
 }
 
 // Patient Dashboard Component
-function PatientDashboard() {
+function HospitalDashboard() {
 
 const services = [
     {
-      title: "Surgery and Billing",
+      title: "Register Doctors",
       icon: FaMoneyCheckAlt,
-      route: "/doctorrev",
+      route: "/adddoctor",
       description: "...",
     },
     {
-      title: "Ambulance Booking",
-      icon: LuAmbulance,
-      route: "/ambulance-booking",
-      description: "...",
-    },
-    {
-      title: "Doctor Consultation",
-      icon: FaUserDoctor,
-      route: "/doctors",
-      description: "...",
-    },
-    {
-      title: "Real Time Queue",
+      title: "Buy oxygen Cylinder",
       icon: CiBoxList,
-      route: "/patient-queue",
+      route: "/products",
       description: "...",
     },
   ];
@@ -84,7 +73,7 @@ const services = [
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-6 text-gray-800">Patient Services</h1>
+        <h1 className="text-2xl font-bold mb-6 text-gray-800">Hospital Services</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {services.map((service, index) => (
             <ServiceCard key={index} service={service} />
