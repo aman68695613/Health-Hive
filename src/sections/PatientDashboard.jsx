@@ -23,7 +23,7 @@ export default function App() {
 // Navbar Component
 function Navbar() {
   return (
-    <nav className="bg-[#2B579A] text-white p-6 rounded-xl mb-12">
+    <nav className="bg-[#2B579A] text-white p-6  mb-12">
       <div className="container mx-auto flex items-center justify-between">
       <Link to="/">
         <h1 className="text-2xl font-semibold">Patient Dashboard</h1>
@@ -42,7 +42,7 @@ function Navbar() {
             <FaSearch className="h-5 w-5 text-gray-500 ml-2" />
           </div>
 
-          <FaUserCircle className="h-8 w-8" />
+          <FaUserCircle className="h-8 w-8 opacity-0" />
         </div>
       </div>
     </nav>
