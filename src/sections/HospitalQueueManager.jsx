@@ -12,7 +12,7 @@ const HospitalQueueManager = () => {
   // Fetch hospitals initially
   useEffect(() => {
     const fetchHospitals = async () => {
-      const res = await axios.get("/api/hospitals");
+      const res = await axios.get("/api/hospitals/");
       setHospitals(res.data);
     };
     fetchHospitals();
@@ -39,7 +39,7 @@ const HospitalQueueManager = () => {
   };
 
   const handleNext = async (queueId) => {
-    const res = await axios.post(`/api/queues/${queueId}/next`);
+    const res = await axios.post(`/api/hospitals/queues/${queueId}/next`);
     if (res.data?.transferredUser?.name) {
       toast.success(`Transferring ${res.data.transferredUser.name} for consultation...`);
     } else {

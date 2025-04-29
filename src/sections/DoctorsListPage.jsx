@@ -31,7 +31,7 @@ function DoctorsListPage() {
     useEffect(() => {
         const fetchDoctors = async () => {
             try {
-                const { data } = await axios.get('/doctors');
+                const { data } = await axios.get('/api/doctors/');
                 setDoctors(data);
                 setFilteredDoctors(data);
             } catch (error) {
@@ -136,11 +136,6 @@ function DoctorsListPage() {
                                             Book Now
                                         </button>
                                     ) : (
-                                        // <button
-                                        //     className="mt-4 w-full px-4 py-2 bg-green-500 text-white rounded-xl shadow-md hover:bg-green-600 transition"
-                                        // >
-                                        //     Chat
-                                        // </button>
                                         <button
                                         onClick={() => {
                                             localStorage.setItem("doctorId", doctor.id);

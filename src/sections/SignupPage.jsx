@@ -12,7 +12,7 @@ function LoginPage() {
   async function handleSignUpSubmit(e){
     e.preventDefault()
     try{
-        const data=await axios.post('/signup',{name,email,password}) 
+        const data=await axios.post('/api/signup',{name,email,password}) 
         alert("Signup successful")
         console.log(data)
         setRedirect(true) 
