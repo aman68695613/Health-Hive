@@ -1,8 +1,8 @@
 
 import ArrowIcon from "../assets/arrow-right.svg?react";
 import cogImage from "../assets/3d hospital.jpg";;
-import cylinderImage from "../assets/cylinder.png";
-import noodleImage from "../assets/noodle.png";
+// import cylinderImage from "../assets/cylinder.png";
+// import noodleImage from "../assets/noodle.png";
 
 import {
   motion,

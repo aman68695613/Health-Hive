@@ -93,7 +93,6 @@
 //   );
 // };
 
-
 import acmeLogo from "../assets/max hospital.png";
 import quantumLogo from "../assets/apollo-hospitals.png";
 import echoLogo from "../assets/medanta.png";
@@ -121,45 +120,45 @@ export const LogoTicker = () => {
             <img
               src={acmeLogo}
               alt="Acme Logo"
-              className="h-20 w-auto"
+              className="h-25 w-auto"
             />
             <img
               src={quantumLogo}
               alt="Quantum Logo"
-              className="h-20 w-auto"
+              className="h-25 w-auto"
             />
             <img
               src={echoLogo}
               alt="Echo Logo"
-              className="h-20 w-auto"
+              className="h-25 w-auto"
             />
             <img
               src={celestialLogo}
               alt="Celestial Logo"
-              className="h-20 w-auto"
+              className="h-25 w-auto"
             />
             
             {/* Second set of logos for animation */}
             <img
               src={acmeLogo}
               alt="Acme Logo"
-              className="h-20 w-auto"
+              className="h-25 w-auto"
               
             />
             <img
               src={quantumLogo}
               alt="Quantum Logo"
-              className="h-20 w-auto"
+              className="h-25 w-auto"
             />
             <img
               src={echoLogo}
               alt="Echo Logo"
-              className="h-20 w-auto"
+              className="h-25 w-auto"
             />
             <img
               src={celestialLogo}
               alt="Celestial Logo"
-              className="h-20 w-auto"
+              className="h-25 w-auto"
             />
             
           </motion.div>

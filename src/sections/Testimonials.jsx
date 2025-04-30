@@ -1,4 +1,3 @@
-
 import avatar1 from "../assets/avatar-1.png";
 import avatar2 from "../assets/avatar-2.png";
 import avatar3 from "../assets/avatar-3.png";
@@ -8,10 +7,8 @@ import avatar6 from "../assets/avatar-6.png";
 import avatar7 from "../assets/avatar-7.png";
 import avatar8 from "../assets/avatar-8.png";
 import avatar9 from "../assets/avatar-9.png";
-
 import { motion } from "framer-motion";
 import React from "react";
-
 const testimonials = [
   {
     text: "As a seasoned designer always on the lookout for innovative tools, Framer.com instantly grabbed my attention.",
@@ -68,11 +65,9 @@ const testimonials = [
     username: "@casey09",
   },
 ];
-
 const firstColumn = testimonials.slice(0, 3);
 const secondColumn = testimonials.slice(3, 6);
 const thirdColumn = testimonials.slice(6, 9);
-
 const TestimonialsColumn = ( {
   className,
   testimonials,
@@ -96,7 +91,6 @@ const TestimonialsColumn = ( {
           {testimonials.map(({ text, imageSrc, name, username }) => (
             <div 
             key={`${username}-0`}
-
             className="card">
               <div>{text}</div>
               <div className="flex items-center gap-2 mt-5">
@@ -121,19 +115,18 @@ const TestimonialsColumn = ( {
     </motion.div>
   </div>
 );
-
 export const Testimonials = () => {
   return (
     <section className="bg-white">
       <div className="container">
         <div className="section-heading">
           <div className="flex justify-center">
-            <div className="tag">Testimonials</div>
+            
           </div>
           <h2 className="section-title mt-5">What our users say</h2>
-          <p className="section-description mt-5">
-            From intuitive design to powerful features, our app has become an
-            essential tool for users around the world.
+          <p className="section-description mt-5 text-md">
+          From real-time queues to instant ambulance access, our platform redefines urgent care.
+          Designed for speed, built for trust!
           </p>
         </div>
         <div className="flex justify-center gap-6 mt-10 [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)] max-h-[738px] overflow-hidden">

@@ -28,10 +28,11 @@ function BasePage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Navbar */}
-      <nav className="bg-blue-800 text-white px-6 py-4 flex items-center justify-between">
+      <nav className="bg-blue-800 text-white px-6 py-6 flex items-center justify-between">
         <Link to="/" className="text-white">
-        <h1 className="text-xl font-bold">Dashboard</h1>
+        <h1 className="text-3xl font-bold">Dashboard</h1>
         </Link>
+        
         <div className="flex gap-4">
             
         </div>
@@ -74,10 +75,10 @@ function BasePage() {
               </div>
             </div>
           </div>
-          </Link>
+        </Link>
 
           {/* 👤 Patient Card with Link */}
-          <Link to="/patient-dashboard" className="block">
+        <Link to="/patient-dashboard" className="block">
             <div className="group relative bg-gray-100 hover:bg-gray-200 rounded-2xl shadow-2xl transition-all duration-300 h-[500px] w-full overflow-hidden">
               <div className="absolute inset-0 transition-opacity duration-300 group-hover:opacity-0">
                 {!imageErrors.patient ? (
@@ -105,9 +106,10 @@ function BasePage() {
                 </div>
               </div>
             </div>
-          </Link>
+        </Link>
 
           {/* 🩺 Doctor Card */}
+        <Link to="/doctor-dashboard" className="block">  
           <div className="group relative bg-gray-100 hover:bg-gray-200 rounded-2xl shadow-2xl transition-all duration-300 h-[500px] w-full overflow-hidden">
             <div className="absolute inset-0 transition-opacity duration-300 group-hover:opacity-0">
               {!imageErrors.doctor ? (
@@ -135,7 +137,7 @@ function BasePage() {
               </div>
             </div>
           </div>
-
+        </Link>
         </div>
       </div>
     </div>
