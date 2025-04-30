@@ -12,8 +12,8 @@ export const Header = () => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await axios.get("/isloggedin");
-        setIsLoggedIn(response.data.isLoggedIn);
+        const response = await axios.get("/api/isloggedin");
+        setIsLoggedIn(response.data.isLoggedIn); // Update state based on response
       } catch (error) {
         console.error("Error checking authentication status:", error);
         setIsLoggedIn(false);
@@ -25,7 +25,7 @@ export const Header = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("/logout");
+      await axios.post("/api/logout");
       localStorage.clear();
       setIsLoggedIn(false);
       navigate("/login");

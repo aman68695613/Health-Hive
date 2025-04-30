@@ -12,7 +12,7 @@ const PatientQueueStatus = ({ userId }) => {
   const fetchStatus = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`/api/patient/${userId}/queues`);
+      const res = await axios.get(`/api/hospitals/patient/${userId}/queues`);
       setMyQueues(res.data);
     } catch (err) {
       console.error("Error fetching queue status:", err);

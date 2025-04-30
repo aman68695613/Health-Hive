@@ -79,7 +79,7 @@ const AmbulanceBookingPage = () => {
     setSelectedAmbulance(ambulance); // 🔥 Set selected ambulance
   
     try {
-      const response = await axios.post("http://localhost:3000/api/book", {
+      const response = await axios.post("http://localhost:3000/api/ambulances/book", {
         ambulanceId: ambulance.id,
         userId,
         userLocation,

@@ -11,7 +11,7 @@ function LoginPage() {
   async function handleLoginSubmit(e){
     e.preventDefault()
     try{
-        const data=await axios.post('/login',{email,password}) 
+        const data=await axios.post('/api/login',{email,password}) 
         const userId=localStorage.setItem('userId',data.data.user.id)
         const username=localStorage.setItem('username',data.data.user.name)
         console.log(data.data.user)
