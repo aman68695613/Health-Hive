@@ -12,7 +12,7 @@ const app = express();
 // Middleware
 app.use(cors({
   credentials: true,
-  origin: "http://localhost:5173"
+  origin: ["http://localhost:5173", "https://health-hive-beta.vercel.app"]
 }));
 app.use(cookieParser());
 app.use(express.json());
