@@ -9,7 +9,7 @@ import io from "socket.io-client";
 import axios from "axios";
 import L from "leaflet";
 
-const socket = io("http://localhost:3000");
+const socket = io("https://health-hive-8tv1.onrender.com");
 
 const ambulanceIcon = new L.Icon({
   iconUrl: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
@@ -59,7 +59,7 @@ const AmbulanceBookingPage = () => {
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/api/ambulances").then((response) => {
+    axios.get("/api/ambulances").then((response) => {
       setAmbulances(response.data);
     });
 
@@ -79,7 +79,7 @@ const AmbulanceBookingPage = () => {
     setSelectedAmbulance(ambulance); // 🔥 Set selected ambulance
   
     try {
-      const response = await axios.post("http://localhost:3000/api/ambulances/book", {
+      const response = await axios.post("/api/ambulances/book", {
         ambulanceId: ambulance.id,
         userId,
         userLocation,

@@ -3,7 +3,7 @@ import axios from "axios";
 import io from "socket.io-client";
 import { Loader2 } from "lucide-react";
 
-const socket = io("http://localhost:3000");
+const socket = io("https://health-hive-8tv1.onrender.com");
 
 const PatientQueueStatus = ({ userId }) => {
   const [myQueues, setMyQueues] = useState([]);

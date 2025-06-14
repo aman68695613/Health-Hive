@@ -23,7 +23,7 @@ import HospitalDashboard from "./sections/HospitalDashBoard";
 import DoctorDashboard from "./sections/DoctorDashboard";
 
 //setting up cors 
-axios.defaults.baseURL = "http://localhost:3000"
+axios.defaults.baseURL = "https://health-hive-8tv1.onrender.com"
 axios.defaults.withCredentials = true
 // Initialize Lenis
 const lenis = new Lenis({

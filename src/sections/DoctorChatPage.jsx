@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
 
-const socket = io("http://localhost:3000");
+const socket = io("https://health-hive-8tv1.onrender.com");
 
 function DoctorChatPage() {
   const doctorId = parseInt(localStorage.getItem("doctorId"), 10); // assuming doctor is logged in

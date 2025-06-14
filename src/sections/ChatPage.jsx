@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
 
-const socket = io("http://localhost:3000");
+const socket = io("https://health-hive-8tv1.onrender.com");
 
 function ChatPage() {
   const { doctorId } = useParams();

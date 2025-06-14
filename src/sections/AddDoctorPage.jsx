@@ -30,7 +30,7 @@ function AddDoctorPage() {
     };
 
     try {
-      await axios.post('http://localhost:3000/api/doctors/', dataToSend, {
+      await axios.post('/api/doctors/', dataToSend, {
         withCredentials: true
       });
       alert('Doctor added successfully!');
