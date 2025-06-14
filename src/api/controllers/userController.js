@@ -77,6 +77,8 @@ export const login = async (req, res) => {
   httpOnly: true,
   secure: true,       // ⛳ Required for cookies to work over HTTPS
   sameSite: 'None',   // ⛳ Required for cross-site cookies
+
+  
 });
     
     res.json({ message: 'Login successful', user, token });
