@@ -73,12 +73,10 @@ export const login = async (req, res) => {
     const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '24h' });
     
     // Set cookie
-    res.cookie('auth_token', token,{
+    res.cookie('auth_token', token, {
   httpOnly: true,
   secure: true,       // ⛳ Required for cookies to work over HTTPS
   sameSite: 'None',   // ⛳ Required for cross-site cookies
-
-  
 });
     
     res.json({ message: 'Login successful', user, token });
